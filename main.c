@@ -133,7 +133,7 @@ int	main(int ac,char  **av)
 	}
 	else
 	{
-
+		printf("go touch some grass");
 	}
 	
 }
