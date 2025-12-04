@@ -32,38 +32,6 @@ int	m_array_strlen(int size,int first, char **str_arr)
 	return (total);
 }
 
-int	space_count(char *formula)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (formula[i] != '\0')
-	{
-		if(formula[i] == ' ' || (formula[i] >= 9 && formula[i] <= 13))
-			count++;
-		i++;
-	}
-	return (count);
-}
-char	*m_strdup(char *str)
-{
-	int	i;
-	char	*temp;
-
-	temp = malloc(m_strlen(str) + 1);
-	if(temp == NULL)
-		return NULL;
-	i = 0;
-	while(str[i] != '\0')
-	{
-		temp[i] = str[i];
-		i++;
-	}
-	temp[i] = '\0';
-	return (temp);
-}
 char	*m_skip_extras(char *formula)
 {
 	int	i;
@@ -90,16 +58,6 @@ char	*m_skip_extras(char *formula)
 	temp = realloc(temp, j + 1);
 	return (temp);
 }
-char	solve(char *formula)
-{
-	int	i;
-
-	i = 0;
-	while(formula[i] != '\0')
-	{
-		
-	}
-}
 char	*concatenate_arguments(int ac,char **av)
 {
 	int	i;
@@ -123,6 +81,10 @@ char	*concatenate_arguments(int ac,char **av)
 	}
 	formula[formula_len] = '\0';
 	return (formula);
+}
+int 	solve(char *formula)
+{
+	
 }
 
 int	main(int ac,char  **av)
