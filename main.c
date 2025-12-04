@@ -127,7 +127,7 @@ char	*concatenate_arguments(int ac,char **av)
 
 int	main(int ac,char  **av)
 {
-	if(ac >= 1)
+	if(ac >= 2)
 	{
 		printf("%s",m_skip_extras(concatenate_arguments(ac,av)));
 	}
