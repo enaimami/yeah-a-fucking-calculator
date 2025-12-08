@@ -31,7 +31,6 @@ int	m_array_strlen(int size,int first, char **str_arr)
 	}
 	return (total);
 }
-
 char	*m_skip_extras(char *formula)
 {
 	int	i;
@@ -82,16 +81,59 @@ char	*concatenate_arguments(int ac,char **av)
 	formula[formula_len] = '\0';
 	return (formula);
 }
-int 	solve(char *formula)
+void    m_split(char *formula, int **numbers, char **operators)
 {
-	
+    int i;
+    int j;
+    int k;
+    int sign;
+    i = 0;
+    k = 0;
+    j = 0;
+    sign = 1;
+    *numbers = malloc(m_strlen(formula) + 1);
+    *operators = malloc(m_strlen(formula) + 1);
+    if(formula[0] == '-')
+        sign = -1;
+    while(formula[i] != '\0')
+    {
+        if(m_isnbr(formula[i]))
+        {
+            (*numbers)[j] = formula[i] - '0';
+            i++;
+            while(m_isnbr(formula[i]))
+            {
+                (*numbers)[j] = ((*numbers)[j] * 10) + (formula[i] - '0');
+                i++;
+            }
+            j++;
+            continue;
+        }
+        if(m_isoperator(formula[i]))
+        {
+            (*operators)[k] = formula[i];
+            k++;
+            i++;
+            continue;
+        }
+    }
+
 }
 
 int	main(int ac,char  **av)
 {
 	if(ac >= 2)
 	{
-		printf("%s",m_skip_extras(concatenate_arguments(ac,av)));
+		int *merhaba;
+		char *naber;
+		char *formultype_shi;
+		formultype_shi = concatenate_arguments(ac,av);
+		formultype_shi = m_skip_extras(formultype_shi);
+		m_split(formultype_shi,&merhaba,&naber);
+		printf("sayılar : %d", merhaba[0]);
+		printf(",%d", merhaba[1]);
+		printf(",%d \n", merhaba[2]);
+		printf("işlemler : %s", naber);
 	}
 	else
 	{
