@@ -57,6 +57,36 @@ char	*m_skip_extras(char *formula)
 	temp = realloc(temp, j + 1);
 	return (temp);
 }
+
+char *clean_parentheses(char *formula)
+{
+	int i;
+	int start;
+	int end;
+	
+	start = 0;
+	end = 0;
+	while(strchr(formula, ')') != NULL)
+	{
+		i = 0;
+		
+		while(formula[i] != '\0')
+		{
+			if(formula[i] == ')')
+			{
+				end = i;
+				while(formula[end] != '(')
+				{
+					end--;
+				}
+
+			}
+			i++;
+		}
+	}
+	return (formula);
+}
+
 char	*concatenate_arguments(int ac,char **av)
 {
 	int	i;
