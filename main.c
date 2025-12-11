@@ -63,9 +63,9 @@ char *clean_parentheses(char *formula)
 	int i;
 	int start;
 	int end;
-	
-	start = 0;
-	end = 0;
+	int temp;
+	int len;
+	char *temparr;
 	while(strchr(formula, ')') != NULL)
 	{
 		i = 0;
@@ -75,16 +75,35 @@ char *clean_parentheses(char *formula)
 			if(formula[i] == ')')
 			{
 				end = i;
-				while(formula[end] != '(')
+				temp = i;
+				while(formula[temp] != '(')
 				{
-					end--;
+					temp--;
 				}
-
+				start = temp;
+				temparr = malloc(end - start);
+				len = end - start - 1;
+				temparr = strncpy(temparr, formula + start + 1, len);
+				temparr[len] = '\0';
+				//TODO : sıralı işlem yapacak bir fonksiyon yaz
+				//formula'nın start'ıncı elemanından itibaren temparr'ı basacak ve döngü sayısı temparr'ın uzunluğundan kısa ise geri kalanına boşluk basacak bir fonksiyon yaz.
+				//formulayı gelen sonuca eşitle ve döngüye devam et
 			}
 			i++;
 		}
 	}
 	return (formula);
+}
+
+double solve(char *formula)
+{
+	int i;
+
+	i = 0;
+	while(formula[i] != '\0')
+	{
+
+	}
 }
 
 char	*concatenate_arguments(int ac,char **av)
@@ -164,6 +183,7 @@ int	main(int ac,char  **av)
 		printf(",%d", merhaba[1]);
 		printf(",%d \n", merhaba[2]);
 		printf("işlemler : %s", naber);
+		//TODO : değişken atama yap.
 	}
 	else
 	{
