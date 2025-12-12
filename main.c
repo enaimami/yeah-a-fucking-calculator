@@ -95,14 +95,77 @@ char *clean_parentheses(char *formula)
 	return (formula);
 }
 
+double calculate_two(double *num1, double *num2, char op,char **status)
+{
+	double total;
+
+	total = 0;
+	if(op != '?')
+	{
+		if(op == '+')
+			total = *num1 + *num2;
+		if(op == '-')
+			total = *num1 - *num2;
+		if(op == '*')
+			total = *num1 * *num2;
+		if(op == '/')
+		{
+			if(*num2 == 0)
+			{
+				*status = "undefined";
+			}
+			else
+				total = *num1 / *num2;
+		}
+		*num1 = 0;
+		*num2 = 0;
+		op = '?';
+		return total;
+	}
+	**status = "unvalid operator";
+	return total;
+}
 double solve(char *formula)
 {
 	int i;
+	int startindex;
+	double num1;
+	char op;
+	double num2;
 
 	i = 0;
+	num1 = 0;
+	num2 = 0;
+	startindex = 0;
+	op = '?';
 	while(formula[i] != '\0')
 	{
-
+		startindex = i;
+		while(m_isnbr(formula[i]))
+		{
+			num1 = (10 * num1) + formula[i] - '0';
+			formula[i] = ' ';
+			i++;
+			continue;
+		}
+		if(m_isoperator(formula[i]) && (formula[i] == 'x' || formula[i] == '/'))
+		{
+			op = formula[i];
+			formula[i] = ' ';
+			i++;
+			while(!m_isnbr(formula[i]))
+			{
+				formula[i] = ' ';
+				i++;
+			}
+			while(m_isnbr(formula[i]))
+			{
+				num2 = (10 * num1) + formula[i] - '0';
+				formula[i] = ' ';
+				i++;
+			}
+			continue;
+		}
 	}
 }
 
