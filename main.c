@@ -31,7 +31,7 @@ int	m_array_strlen(int size,int first, char **str_arr)
 	}
 	return (total);
 }
-char	*m_skip_extras(char *formula)
+char	*fucking_problematic_mallocs_i_hope_you_die_in_the_fucking_hell(char *formula)
 {
 	int	i;
 	int	j;
@@ -42,7 +42,6 @@ char	*m_skip_extras(char *formula)
 	temp = malloc(m_strlen(formula) + 2);
 	if(temp == NULL)
 		return NULL;
-	formula[0] = '@';
 	while(formula[i] != '\0')
 	{
 		if(!(m_isnbr(formula[i])) && !(m_isoperator(formula[i])) )
@@ -58,164 +57,132 @@ char	*m_skip_extras(char *formula)
 	temp = realloc(temp, j + 1);
 	return (temp);
 }
-
-char *clean_parentheses(char *formula)
+char	*m_skip_extras(char *formula)
 {
-	int i;
-	int start;
-	int end;
-	int temp;
-	int len;
-	char *temparr;
-	while(strchr(formula, ')') != NULL)
+	int	i;
+	int	j;
+	char	*temp;
+
+	i = 0;
+	j = 0;
+	temp = malloc(m_strlen(formula) + 2);
+	if(temp == NULL)
+		return NULL;
+	while(formula[i] != '\0')
 	{
-		i = 0;
-		
-		while(formula[i] != '\0')
+		if(!(m_isnbr(formula[i])) && !(m_isoperator(formula[i])) )
 		{
-			if(formula[i] == ')')
-			{
-				end = i;
-				temp = i;
-				while(formula[temp] != '(')
-				{
-					temp--;
-				}
-				start = temp;
-				temparr = malloc(end - start);
-				len = end - start - 1;
-				temparr = strncpy(temparr, formula + start + 1, len);
-				temparr[len] = '\0';
-				//TODO : sıralı işlem yapacak bir fonksiyon yaz
-				//formula'nın start'ıncı elemanından itibaren temparr'ı basacak ve döngü sayısı temparr'ın uzunluğundan kısa ise geri kalanına boşluk basacak bir fonksiyon yaz.
-				//formulayı gelen sonuca eşitle ve döngüye devam et
-			}
 			i++;
+			continue;
 		}
+		temp[j] = formula[i];
+		j++;
+		i++;
 	}
-	return (formula);
+	temp[j] = '\0';
+	temp = realloc(temp, j + 1);
+	free(formula);
+	return (temp);
 }
 
-double calculate_two(double *num1, double *num2, char op,char **status)
+int calculate_two(int *num1, int *num2, char *op, char *stat)
 {
-	double total;
+	int total;
 
 	total = 0;
-	if(op != '?')
+	if(*op != '?')
 	{
-		if(op == '+')
+		if(*op == '+')
 			total = *num1 + *num2;
-		if(op == '-')
+		if(*op == '-')
 			total = *num1 - *num2;
-		if(op == '*')
+		if(*op == '*')
 			total = *num1 * *num2;
-		if(op == '/')
+		if(*op == '/')
 		{
 			if(*num2 == 0)
 			{
-				*status = "undefined";
+				*stat = 'D';
 			}
 			else
 				total = *num1 / *num2;
 		}
 		*num1 = 0;
 		*num2 = 0;
-		op = '?';
+		*op = '?';
+		*stat = 'S';
 		return total;
 	}
-	**status = "unvalid operator";
+	*stat = 'O';
 	return total;
 }
 
-char is_there_any_fucking_minus_or_plus(char *w)
+void write_number_to_string(char **str, int endpoint, int nbr)
 {
-	
-}
-
-double get_left_number(char **formula, int startindex)
-{
-	int i;
-
-	i = startindex;
-	while(m_isnbr(formula[i]))
-	{
-		write(1, formula[i],1);
-		i--;
-	}
-}
-
-double get_double_number(char *formula, int current_position)
-{
-	double result;
-	int is_negative;
-	int endindex;
-	int startindex;
-	int i;
-	endindex = 0;
-	is_negative = 1;
-	result = 0;
-	i = 0;
-	while(!m_isoperator(formula[i]) && formula[i] != '\0')
-	{
-		i++;
-	}
-	endindex = i;
-	while(formula[i] != '@')
-	{
-		i--;
-	}
-	startindex = i;
-	if(formula[startindex + 1] == '-')
-	{
-		is_negative = -1;
-	}
+    // Eğer sayı 0 ise manuel olarak yaz
+    if (nbr == 0)
+    {
+        (*str)[endpoint] = '0';
+        return;
+    }
+    
+    while(nbr > 0)
+    {
+        (*str)[endpoint] = (nbr % 10) + '0';
+        nbr = nbr / 10;
+        endpoint--; 
+    }
 }
 
 double solve(char *formula)
 {
 	int i;
-	int k;
-	int startindex;
-	double num1;
+	char stat;
 	char op;
-	double num2;
+	int num1;
+	int num2;
 
 	i = 0;
-	k = 0;
 	num1 = 0;
 	num2 = 0;
-	startindex = 0;
 	op = '?';
+	stat = 'S';
 	while(formula[i] != '\0')
 	{
-		startindex = i;
-		if(m_isoperator(formula[i]) && (formula[i] == 'x' || formula[i] == '/'))
+		while(formula[i] != '\0' && m_isnbr(formula[i]))
 		{
-			k = i - 1;
-			while(m_isnbr(formula[k]))
-				k--;
-			startindex = k;
-			k++;
-			while(k < i)
-			{
-				num1 = (10 * num1) + formula[k] - '0';
-				formula[k] = ' ';
-				k++;
-			}
-			if(formula[startindex] == '-')
-				num1 = num1 * -1;
-			op = formula[i];
+			num1 = (num1 * 10) + formula[i] - '0';
+			printf("%c", formula[i]);
 			formula[i] = ' ';
 			i++;
-			while(m_isnbr(formula[i]))
-			{
-				num2 = (10 * num2) + formula[i] - '0';
-				formula[i] = ' ';
-				i++;
-			}
-			
 		}
+		printf("\n");
+		if(m_isoperator(formula[i]))
+		{
+			op = formula[i];
+			printf("%c", formula[i]);
+			formula[i] = ' ';
+			i++;
+		}
+		printf("\n");
+		while(formula[i] != '\0' && m_isnbr(formula[i]))
+		{
+			num2 = (num2 * 10) + formula[i] - '0';
+			printf("%c",formula[i]);
+			formula[i] = ' ';
+			i++;
+		}
+		printf("\n");
+		write_number_to_string(&formula,i-1,calculate_two(&num1,&num2,&op,&stat));
+		formula = m_skip_extras(formula);
+		if(stat != 'S')
+		{
+			printf("Hesaplama %c hatası verdi.", stat);	
+			exit(0);
+		}
+		i = 0;
 	}
+	printf("%s", formula);
 }
 
 char	*concatenate_arguments(int ac,char **av)
@@ -243,44 +210,6 @@ char	*concatenate_arguments(int ac,char **av)
 	formula[formula_len] = '\0';
 	return (formula);
 }
-void    m_split(char *formula, int **numbers, char **operators)
-{
-    int i;
-    int j;
-    int k;
-    int sign;
-    i = 0;
-    k = 0;
-    j = 0;
-    sign = 1;
-    *numbers = malloc(m_strlen(formula) + 1);
-    *operators = malloc(m_strlen(formula) + 1);
-    if(formula[0] == '-')
-        sign = -1;
-    while(formula[i] != '\0')
-    {
-        if(m_isnbr(formula[i]))
-        {
-            (*numbers)[j] = formula[i] - '0';
-            i++;
-            while(m_isnbr(formula[i]))
-            {
-                (*numbers)[j] = ((*numbers)[j] * 10) + (formula[i] - '0');
-                i++;
-            }
-            j++;
-            continue;
-        }
-        if(m_isoperator(formula[i]))
-        {
-            (*operators)[k] = formula[i];
-            k++;
-            i++;
-            continue;
-        }
-    }
-
-}
 
 int	main(int ac,char  **av)
 {
@@ -290,13 +219,10 @@ int	main(int ac,char  **av)
 		char *naber;
 		char *formultype_shi;
 		formultype_shi = concatenate_arguments(ac,av);
-		formultype_shi = m_skip_extras(formultype_shi);
-		m_split(formultype_shi,&merhaba,&naber);
-		printf("sayılar : %d", merhaba[0]);
-		printf(",%d", merhaba[1]);
-		printf(",%d \n", merhaba[2]);
-		printf("işlemler : %s", naber);
-		//TODO : değişken atama yap.
+		printf("%s \n", formultype_shi);
+		formultype_shi = fucking_problematic_mallocs_i_hope_you_die_in_the_fucking_hell(formultype_shi);
+		printf("%s\n", formultype_shi);
+		solve(formultype_shi);
 	}
 	else
 	{
