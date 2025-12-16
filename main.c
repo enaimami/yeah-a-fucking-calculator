@@ -39,9 +39,10 @@ char	*m_skip_extras(char *formula)
 
 	i = 0;
 	j = 0;
-	temp = malloc(m_strlen(formula) + 1);
+	temp = malloc(m_strlen(formula) + 2);
 	if(temp == NULL)
 		return NULL;
+	formula[0] = '@';
 	while(formula[i] != '\0')
 	{
 		if(!(m_isnbr(formula[i])) && !(m_isoperator(formula[i])) )
@@ -125,15 +126,62 @@ double calculate_two(double *num1, double *num2, char op,char **status)
 	**status = "unvalid operator";
 	return total;
 }
+
+char is_there_any_fucking_minus_or_plus(char *w)
+{
+	
+}
+
+double get_left_number(char **formula, int startindex)
+{
+	int i;
+
+	i = startindex;
+	while(m_isnbr(formula[i]))
+	{
+		write(1, formula[i],1);
+		i--;
+	}
+}
+
+double get_double_number(char *formula, int current_position)
+{
+	double result;
+	int is_negative;
+	int endindex;
+	int startindex;
+	int i;
+	endindex = 0;
+	is_negative = 1;
+	result = 0;
+	i = 0;
+	while(!m_isoperator(formula[i]) && formula[i] != '\0')
+	{
+		i++;
+	}
+	endindex = i;
+	while(formula[i] != '@')
+	{
+		i--;
+	}
+	startindex = i;
+	if(formula[startindex + 1] == '-')
+	{
+		is_negative = -1;
+	}
+}
+
 double solve(char *formula)
 {
 	int i;
+	int k;
 	int startindex;
 	double num1;
 	char op;
 	double num2;
 
 	i = 0;
+	k = 0;
 	num1 = 0;
 	num2 = 0;
 	startindex = 0;
@@ -141,30 +189,31 @@ double solve(char *formula)
 	while(formula[i] != '\0')
 	{
 		startindex = i;
-		while(m_isnbr(formula[i]))
-		{
-			num1 = (10 * num1) + formula[i] - '0';
-			formula[i] = ' ';
-			i++;
-			continue;
-		}
 		if(m_isoperator(formula[i]) && (formula[i] == 'x' || formula[i] == '/'))
 		{
+			k = i - 1;
+			while(m_isnbr(formula[k]))
+				k--;
+			startindex = k;
+			k++;
+			while(k < i)
+			{
+				num1 = (10 * num1) + formula[k] - '0';
+				formula[k] = ' ';
+				k++;
+			}
+			if(formula[startindex] == '-')
+				num1 = num1 * -1;
 			op = formula[i];
 			formula[i] = ' ';
 			i++;
-			while(!m_isnbr(formula[i]))
-			{
-				formula[i] = ' ';
-				i++;
-			}
 			while(m_isnbr(formula[i]))
 			{
-				num2 = (10 * num1) + formula[i] - '0';
+				num2 = (10 * num2) + formula[i] - '0';
 				formula[i] = ' ';
 				i++;
 			}
-			continue;
+			
 		}
 	}
 }
@@ -178,7 +227,8 @@ char	*concatenate_arguments(int ac,char **av)
 
 	i = 1;
 	formula_len = 0;
-	formula = (char*)malloc(m_array_strlen(ac,1,av) + 1);
+	formula = (char*)malloc(m_array_strlen(ac,1,av) + 2);
+	formula[0] = '@';
 	while (i < ac)
 	{
 		j = 0;
