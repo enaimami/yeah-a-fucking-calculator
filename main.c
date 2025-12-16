@@ -141,9 +141,11 @@ double solve(char *formula)
 	char op;
 	int num1;
 	int num2;
+	int total;
 
 	i = 0;
 	num1 = 0;
+	total = 0;
 	num2 = 0;
 	op = '?';
 	stat = 'S';
@@ -172,17 +174,23 @@ double solve(char *formula)
 			formula[i] = ' ';
 			i++;
 		}
+		
 		printf("\n");
 		write_number_to_string(&formula,i-1,calculate_two(&num1,&num2,&op,&stat));
 		formula = m_skip_extras(formula);
 		if(stat != 'S')
 		{
+			if(op == '?')
+			{
+				break;
+			}
 			printf("Hesaplama %c hatası verdi.", stat);	
 			exit(0);
 		}
 		i = 0;
+		total = atoi(formula);
 	}
-	printf("%s", formula);
+	printf("İşlem sonucu : %d \n", total);
 }
 
 char	*concatenate_arguments(int ac,char **av)
