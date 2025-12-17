@@ -88,7 +88,39 @@ double solve(char *formula)
 	printf("İşlem sonucu : %d \n", total);
 }
 
+char *operator_clearer(char *formula)
+{
+	int i;
+	int minus_count;
 
+	i = 0;
+	while(formula[i] != '\0')
+	{
+		if(formula[i] != '-' && formula[i] != '+')
+		{
+			i++;
+			continue;
+		}
+		minus_count = 0;
+		while(formula[i] == '-' || formula[i] == '+')
+		{
+			if(formula[i] == '-')
+				minus_count ++;
+			formula[i] = ' ';
+			i++;
+		}
+		if(i > 0 && m_iseven(minus_count))
+		{
+			formula[i-1] = '+';
+		}
+		else
+		{
+			formula[i-1] = '-';
+		}
+	}
+	formula = m_skip_extras(formula);
+	return formula;
+}
 
 int	main(int ac,char  **av)
 {
@@ -101,6 +133,8 @@ int	main(int ac,char  **av)
 		printf("%s \n", formultype_shi);
 		formultype_shi = m_skip_extras(formultype_shi);
 		printf("%s\n", formultype_shi);
+		formultype_shi = operator_clearer(formultype_shi);
+		printf("%s\n",formultype_shi);
 		solve(formultype_shi);
 	}
 	else

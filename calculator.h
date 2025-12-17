@@ -14,5 +14,6 @@ char	*concatenate_arguments(int ac,char **av);
 #define m_isspace(c) ( ( (c) == ' ') || ( (c) >= 9 && (c) <= 13))
 #define m_isalpha(c) ( ( (c) >= 'a' && (c) <= 'z') || ( (c) >= 'A' && (c) <= 'Z'))
 #define m_isnbr(c) ( (c) >= '0' && (c) <= '9')
+#define m_iseven(c) ( (c) % 2 == 0 )
 
 #endif
