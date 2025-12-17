@@ -15,12 +15,17 @@ Because apparently every engineer needs to do this at some point. At least every
 ## Installation
 ```bash
 git clone https://github.com/enaimami/yeah-a-fucking-calculator.git
+cd yeah-a-fucking-calculator
 make
 ./calc
 ```
-And for the install it for systemwise
+And for the install it for your system
 ```bash
+git clone https://github.com/enaimami/yeah-a-fucking-calculator.git
+cd yeah-a-fucking-calculator 
+make
 sudo make install
+calc
 ```
 ## Contributing
 Sure, why not. Make a PR. I'll probably merge it without looking.
