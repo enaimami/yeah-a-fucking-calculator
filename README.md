@@ -14,11 +14,14 @@ Because apparently every engineer needs to do this at some point. At least every
 
 ## Installation
 ```bash
-git clone yeah-a-fucking-calculator
+git clone https://github.com/enaimami/yeah-a-fucking-calculator.git
 make
-./calculator
+./calc
 ```
-
+And for the install it for systemwise
+```bash
+sudo make install
+```
 ## Contributing
 Sure, why not. Make a PR. I'll probably merge it without looking.
 
