@@ -34,18 +34,29 @@ double solve(char *formula)
 	int i;
 	char stat;
 	char op;
-	char total;
+	int total;
 	int num1;
 	int num2;
+	double sign;
 
 	i = 0;
 	num1 = 0;
 	total = 0;
 	num2 = 0;
+	sign = 1;
 	op = '?';
 	stat = 'S';
-	while(formula[i] != '\0')
+	while(1 == 1)
 	{
+		if(formula[i] == '-' || formula[i] == '+')
+		{
+			if(formula[i] == '-')
+			{
+				sign = -1;
+			}
+			formula[i] = ' ';
+			i++;
+		}
 		while(formula[i] != '\0' && m_isnbr(formula[i]))
 		{
 			num1 = (num1 * 10) + formula[i] - '0';
@@ -53,6 +64,7 @@ double solve(char *formula)
 			formula[i] = ' ';
 			i++;
 		}
+		num1 = num1 * sign;
 		printf("\n");
 		if(m_isoperator(formula[i]))
 		{
@@ -62,6 +74,16 @@ double solve(char *formula)
 			i++;
 		}
 		printf("\n");
+		sign = 1;
+		if(formula[i] == '-' || formula[i] == '+')
+		{
+			if(formula[i] == '-')
+			{
+				sign = -1;
+			}
+			formula[i] = ' ';
+			i++;
+		}
 		while(formula[i] != '\0' && m_isnbr(formula[i]))
 		{
 			num2 = (num2 * 10) + formula[i] - '0';
@@ -69,7 +91,8 @@ double solve(char *formula)
 			formula[i] = ' ';
 			i++;
 		}
-		
+		num2 = num2 * sign;
+		sign = 1;
 		printf("\n");
 		write_number_to_string(&formula,i-1,calculate_two(&num1,&num2,&op,&stat));
 		formula = m_skip_extras(formula);
@@ -136,6 +159,7 @@ int	main(int ac,char  **av)
 		formultype_shi = operator_clearer(formultype_shi);
 		printf("%s\n",formultype_shi);
 		solve(formultype_shi);
+		free(formultype_shi);
 	}
 	else
 	{
