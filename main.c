@@ -29,7 +29,7 @@ char	*m_skip_extras(char *formula)
 	return (temp);
 }
 
-double solve(char *formula)
+char *solve(char *formula)
 {
 	int i;
 	char stat;
@@ -109,6 +109,7 @@ double solve(char *formula)
 		total = atoi(formula);
 	}
 	printf("İşlem sonucu : %d \n", total);
+	return formula;
 }
 
 char *operator_clearer(char *formula)
@@ -116,6 +117,7 @@ char *operator_clearer(char *formula)
 	int i;
 	int minus_count;
 
+	minus_count = 0;
 	i = 0;
 	while(formula[i] != '\0')
 	{
@@ -158,7 +160,7 @@ int	main(int ac,char  **av)
 		printf("%s\n", formultype_shi);
 		formultype_shi = operator_clearer(formultype_shi);
 		printf("%s\n",formultype_shi);
-		solve(formultype_shi);
+		formultype_shi = solve(formultype_shi);
 		free(formultype_shi);
 	}
 	else
