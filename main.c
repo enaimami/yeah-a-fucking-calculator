@@ -29,6 +29,34 @@ char	*m_skip_extras(char *formula)
 	return (temp);
 }
 
+int get_numbers(char **formula, int *i)
+{
+	int num;
+
+	num = 0;
+	while((*formula)[(*i)] != '\0' && m_isnbr((*formula)[*i]))
+	{
+		num = (num * 10) + (*formula)[*i] - '0';
+		printf("%c", (*formula)[*i]);
+		(*formula)[*i] = ' ';
+		(*i)++;
+	}
+	return num;
+}
+
+int get_sign(char **formula, int *i)
+{
+	int sign = 1;
+	if((*formula)[(*i)] == '-' || (*formula)[(*i)] == '+')
+	{
+		if((*formula)[(*i)] == '-')
+			sign = -1;
+		(*formula)[(*i)] = ' ';
+		(*i)++;
+	}
+	return sign;
+}
+
 char *solve(char *formula)
 {
 	int i;
@@ -41,29 +69,15 @@ char *solve(char *formula)
 
 	i = 0;
 	num1 = 0;
-	total = 0;
 	num2 = 0;
+	total = 0;
 	sign = 1;
 	op = '?';
 	stat = 'S';
 	while(1 == 1)
 	{
-		if(formula[i] == '-' || formula[i] == '+')
-		{
-			if(formula[i] == '-')
-			{
-				sign = -1;
-			}
-			formula[i] = ' ';
-			i++;
-		}
-		while(formula[i] != '\0' && m_isnbr(formula[i]))
-		{
-			num1 = (num1 * 10) + formula[i] - '0';
-			printf("%c", formula[i]);
-			formula[i] = ' ';
-			i++;
-		}
+		sign = get_sign(&formula,&i);
+		num1 = get_numbers(&formula, &i);
 		num1 = num1 * sign;
 		printf("\n");
 		if(m_isoperator(formula[i]))
@@ -75,22 +89,8 @@ char *solve(char *formula)
 		}
 		printf("\n");
 		sign = 1;
-		if(formula[i] == '-' || formula[i] == '+')
-		{
-			if(formula[i] == '-')
-			{
-				sign = -1;
-			}
-			formula[i] = ' ';
-			i++;
-		}
-		while(formula[i] != '\0' && m_isnbr(formula[i]))
-		{
-			num2 = (num2 * 10) + formula[i] - '0';
-			printf("%c",formula[i]);
-			formula[i] = ' ';
-			i++;
-		}
+		sign = get_sign(&formula, &i);
+		num2 = get_numbers(&formula, &i);
 		num2 = num2 * sign;
 		sign = 1;
 		printf("\n");
