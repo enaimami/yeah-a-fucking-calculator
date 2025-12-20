@@ -65,7 +65,7 @@ char *solve(char *formula)
 	int total;
 	int num1;
 	int num2;
-	double sign;
+	int sign;
 
 	i = 0;
 	num1 = 0;
@@ -89,12 +89,12 @@ char *solve(char *formula)
 		}
 		printf("\n");
 		sign = 1;
-		sign = get_sign(&formula, &i);
+		sign = get_sign(&formula,&i);
 		num2 = get_numbers(&formula, &i);
 		num2 = num2 * sign;
 		sign = 1;
 		printf("\n");
-		write_number_to_string(&formula,i-1,calculate_two(&num1,&num2,&op,&stat));
+		write_number_to_string(&formula,i,calculate_two(&num1,&num2,&op,&stat));
 		formula = m_skip_extras(formula);
 		if(stat != 'S')
 		{
@@ -121,6 +121,14 @@ char *operator_clearer(char *formula)
 	i = 0;
 	while(formula[i] != '\0')
 	{
+		if ((formula[i] == '-' || formula[i] == '+') &&
+    (i == 0 || m_isoperator(formula[i - 1])))
+{
+    i++;
+    continue;
+}
+
+
 		if(formula[i] != '-' && formula[i] != '+')
 		{
 			i++;

@@ -66,19 +66,33 @@ int calculate_two(int *num1, int *num2, char *op, char *stat)
 }
 void write_number_to_string(char **str, int endpoint, int nbr)
 {
+    int is_negative = 0;
+
     if (nbr == 0)
     {
         (*str)[endpoint] = '0';
         return;
     }
-    
-    while(nbr > 0)
+
+    if (nbr < 0)
+    {
+        is_negative = 1;
+        nbr = -nbr;
+    }
+
+    while (nbr > 0)
     {
         (*str)[endpoint] = (nbr % 10) + '0';
-        nbr = nbr / 10;
-        endpoint--; 
+        nbr /= 10;
+        endpoint--;
+    }
+
+    if (is_negative)
+    {
+        (*str)[endpoint] = '-';
     }
 }
+
 char	*concatenate_arguments(int ac,char **av)
 {
 	int	i;
