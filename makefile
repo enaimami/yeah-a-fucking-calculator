@@ -3,7 +3,7 @@ CC = gcc
 TARGET = calc
 all:
 	@echo "installing the calc"
-	@${CC} *.c src/*.c -o ${TARGET}
+	@${CC} *.c -o ${TARGET}
 
 install:
 	install -m 755 $(TARGET) /usr/bin/$(TARGET)
