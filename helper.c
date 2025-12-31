@@ -3,7 +3,7 @@ void m_putchar(char c)
 {
     write(1, &c,1);
 }
-void putstr(char *str)
+void print(char *str)
 {
     int i = 0;
     while(str[i] != '\0')
@@ -13,15 +13,18 @@ void putstr(char *str)
     }
     return ;
 }
-int m_strlen(char *str)
+long int m_strlen(char *str)
 {
-    int i = 0;
+    long int i;
+
+    i = 0;
     while (str[i] != '\0')
     {
         i++;
     }
-    return i+1;
+    return i;
 }
+
 char *m_strcpy(char *str)
 {
     int i;
